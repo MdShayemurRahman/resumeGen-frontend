@@ -87,7 +87,7 @@ export const LoginPage = () => {
       </Box>
       <Grid container spacing={4} justifyContent='center' sx={{ marginTop: 4 }}>
         <FeatureItem item xs={12} sm={6} md={4}>
-          <FeatureIcon src='/icons/linkedin.svg' alt='LinkedIn Integration' />
+          <FeatureIcon src='/icons/linkedin.png' alt='LinkedIn Integration' />
           <FeatureTitle variant='h6'>LinkedIn Integration</FeatureTitle>
           <FeatureDescription variant='body1'>
             Seamlessly import your LinkedIn profile information to populate your
@@ -95,7 +95,7 @@ export const LoginPage = () => {
           </FeatureDescription>
         </FeatureItem>
         <FeatureItem item xs={12} sm={6} md={4}>
-          <FeatureIcon src='/icons/customization.svg' alt='Customization' />
+          <FeatureIcon src='/icons/resume.png' alt='Customization' />
           <FeatureTitle variant='h6'>Customization</FeatureTitle>
           <FeatureDescription variant='body1'>
             Customize your resume layout, sections, and styling to make it truly
@@ -103,7 +103,7 @@ export const LoginPage = () => {
           </FeatureDescription>
         </FeatureItem>
         <FeatureItem item xs={12} sm={6} md={4}>
-          <FeatureIcon src='/icons/download.svg' alt='Download' />
+          <FeatureIcon src='/icons/save-as-pdf.png' alt='Download' />
           <FeatureTitle variant='h6'>Download</FeatureTitle>
           <FeatureDescription variant='body1'>
             Download your resume in various formats, ready to be shared with

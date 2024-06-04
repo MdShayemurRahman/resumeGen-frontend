@@ -22,7 +22,7 @@ const ProtectedRoute = ({ children }) => {
     };
 
     checkAuthentication();
-    const intervalId = setInterval(checkAuthentication, 4 * 60 * 1000); // Check every 4 minutes
+    const intervalId = setInterval(checkAuthentication, 4 * 60 * 1000); 
 
     return () => clearInterval(intervalId);
   }, []);
