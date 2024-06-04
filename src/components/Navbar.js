@@ -1,24 +1,25 @@
 // Navbar.js
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Button, Typography } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import axios from 'axios';
 
 const Navbar = () => {
-  const navigate = useNavigate();
-
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:8080/logout',
-        {},
-        { withCredentials: true }
+        'http://localhost:8080/auth/logout',
+        null,
+        {
+          withCredentials: true,
+        }
       );
       if (response.status === 200) {
         console.log('Logged out successfully');
-        navigate('/login');
       }
+
+      // Redirect to login page or update the UI to reflect the logged-out state
+      window.location.href = '/login';
     } catch (error) {
       console.error('Failed to log out:', error);
     }

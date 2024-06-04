@@ -7,8 +7,9 @@ import { useReactToPrint } from 'react-to-print';
 import Navbar from '../components/Navbar';
 import Resume from '../components/Resume';
 import Settings from '../components/Settings';
+import LoadingComponent from '../components/Loading';
 import { fetchUserProfile, updateUserProfile } from '../Api/api';
-import { EditProfilePage } from './EditProfilePage';
+import { EditResume } from '../components/EditResume';
 
 const HomePage = () => {
   const { id } = useParams();
@@ -70,7 +71,7 @@ const HomePage = () => {
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
             {isEditMode ? (
-              <EditProfilePage
+              <EditResume
                 profileData={profileData}
                 onSave={handleSaveProfile}
                 onCancel={handleCancelEdit}
@@ -81,17 +82,15 @@ const HomePage = () => {
               </div>
             ) : (
               <Typography variant='body1' align='center'>
-                Loading...
+                <LoadingComponent />
               </Typography>
             )}
           </Grid>
           {!isEditMode && (
-            <Grid item xs={12} md={4}>
-              <Settings
-                onEditProfile={handleEditProfile}
-                onGeneratePDF={handleGeneratePDF}
-              />
-            </Grid>
+            <Settings
+              onEditProfile={handleEditProfile}
+              onGeneratePDF={handleGeneratePDF}
+            />
           )}
         </Grid>
       </Container>

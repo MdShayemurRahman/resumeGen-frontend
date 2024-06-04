@@ -11,7 +11,7 @@ export const UserProfileHeader = ({ profileData }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '3rem',
-        backgroundColor: 'primary.main',
+        backgroundColor: '#2C567A',
         color: 'primary.contrastText',
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
       }}
@@ -36,22 +36,24 @@ export const UserProfileHeader = ({ profileData }) => {
             {profileData.user.email}
           </Link>
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            marginTop: '0.5rem',
-          }}
-        >
-          <Phone sx={{ marginRight: '1rem' }} />
-          <Link
-            href={`tel:${profileData.phone}`}
-            color='inherit'
-            underline='hover'
+        {profileData.phone && (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              marginTop: '0.5rem',
+            }}
           >
-            {profileData.phone}
-          </Link>
-        </Box>
+            <Phone sx={{ marginRight: '1rem' }} />
+            <Link
+              href={`tel:${profileData.phone}`}
+              color='inherit'
+              underline='hover'
+            >
+              {profileData.phone}
+            </Link>
+          </Box>
+        )}
         <Box
           sx={{
             display: 'flex',

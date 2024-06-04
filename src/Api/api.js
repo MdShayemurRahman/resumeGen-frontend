@@ -23,29 +23,32 @@ export const updateUserProfile = async (userId, updatedData) => {
   }
 };
 
-// export const handleLogout = async () => {
+export const handleLogout = async () => {
+  try {
+    const response = await axios.post('http://localhost:8080/logout', null, {
+      withCredentials: true,
+    });
+    if (response.status === 200) {
+      console.log('Logged out successfully');
+    }
+
+    // Redirect to login page or update the UI to reflect the logged-out state
+    window.location.href = '/login';
+  } catch (error) {
+    console.error('Failed to log out:', error);
+  }
+};
+
+// export const apiLogout = async () => {
 //   try {
-//     const response = await axios.post('http://localhost:8080/logout', null, {
-//       withCredentials: true,
-//     });
+//     const response = await axios.post('http://localhost:8080/logout');
 //     if (response.status === 200) {
+//       // Clear client-side storage (if you use any)
+//       localStorage.removeItem('authToken');
+//       sessionStorage.removeItem('authToken'); // If you are using sessionStorage
 //       console.log('Logged out successfully');
 //     }
 //   } catch (error) {
 //     console.error('Failed to log out:', error);
 //   }
 // };
-
-export const apiLogout = async () => {
-  try {
-    const response = await axios.post('http://localhost:8080/logout');
-    if (response.status === 200) {
-      // Clear client-side storage (if you use any)
-      localStorage.removeItem('authToken');
-      sessionStorage.removeItem('authToken'); // If you are using sessionStorage
-      console.log('Logged out successfully');
-    }
-  } catch (error) {
-    console.error('Failed to log out:', error);
-  }
-};

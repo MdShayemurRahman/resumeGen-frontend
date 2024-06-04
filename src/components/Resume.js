@@ -11,7 +11,11 @@ const Resume = ({ profileData }) => {
     <Box
       sx={{
         height: '297mm',
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.9)',
+        backgroundImage: `url(/design_templates/design1.png)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
       <Box sx={{ marginBottom: '2rem' }}>
