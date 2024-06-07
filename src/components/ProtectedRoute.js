@@ -1,28 +1,19 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import axios from 'axios';
+import { checkAuthentication } from '../Api/api';
 import LoadingComponent from './Loading';
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(null);
 
   React.useEffect(() => {
-    const checkAuthentication = async () => {
-      try {
-        const response = await axios.get(
-          'http://localhost:8080/auth/checkAuth',
-          {
-            withCredentials: true,
-          }
-        );
-        setIsAuthenticated(response.data.isAuthenticated);
-      } catch (error) {
-        setIsAuthenticated(false);
-      }
+    const checkAuth = async () => {
+      const authStatus = await checkAuthentication();
+      setIsAuthenticated(authStatus);
     };
 
-    checkAuthentication();
-    const intervalId = setInterval(checkAuthentication, 4 * 60 * 1000); 
+    checkAuth();
+    const intervalId = setInterval(checkAuth, 4 * 60 * 1000);
 
     return () => clearInterval(intervalId);
   }, []);

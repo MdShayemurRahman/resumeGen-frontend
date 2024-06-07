@@ -66,7 +66,7 @@ const FeatureDescription = styled(Typography)(({ theme }) => ({
 
 export const LoginPage = () => {
   const handleLogin = () => {
-    window.location.href = `http://localhost:8080/auth/linkedin`;
+    window.location.href = `${process.env.REACT_APP_API_URL}/auth/linkedin`;
   };
 
   return (
