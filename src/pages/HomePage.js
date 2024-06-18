@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Grid, Typography, Container } from '@mui/material';
-import { useReactToPrint } from 'react-to-print';
 
 import Navbar from '../components/Navbar';
 import Resume from '../components/Resume';
@@ -58,12 +57,6 @@ const HomePage = () => {
     navigate(`/profile/${id}`);
   };
 
-  const handleGeneratePDF = useReactToPrint({
-    content: () => componentRef.current,
-    documentTitle: 'Resume',
-    onAfterPrint: () => alert('PDF saved!'),
-  });
-
   return (
     <>
       <Navbar />
@@ -89,7 +82,8 @@ const HomePage = () => {
           {!isEditMode && (
             <Settings
               onEditProfile={handleEditProfile}
-              onGeneratePDF={handleGeneratePDF}
+              // onGeneratePDF={handleGeneratePDF}
+              componentRef={componentRef}
             />
           )}
         </Grid>
