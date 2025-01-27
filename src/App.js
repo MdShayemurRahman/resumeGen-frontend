@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { LoginPage, PageNotFoundPage } from './pages';
 import HomePage from './pages/HomePage';
-import ProtectedRoute from './components/ProtectedRoute';
 
 
 function App() {
