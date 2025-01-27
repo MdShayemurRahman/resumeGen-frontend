@@ -69,6 +69,8 @@ export const LoginPage = () => {
     window.location.href = `${process.env.REACT_APP_API_URL}/auth/linkedin`;
   };
 
+  console.log(process.env.REACT_APP_API_URL);
+
   return (
     <LoginContainer maxWidth='md'>
       <Typography variant='h1'>Link2Resume</Typography>
