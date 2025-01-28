@@ -6,10 +6,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const Resume = ({ profileData }) => {
-  // Helper function to check if a string is empty or undefined
   const isEmpty = (value) => !value || value.trim() === '';
-
-  // Helper function to check if an array is empty or undefined
   const isArrayEmpty = (arr) => !arr || arr.length === 0;
 
   return (
@@ -37,8 +34,8 @@ const Resume = ({ profileData }) => {
             src={profileData.user.image}
             alt={profileData.user.fullName}
             sx={{
-              width: 120,
-              height: 120,
+              width: 150,
+              height: 150,
               border: '3px solid white',
             }}
           />
@@ -50,12 +47,17 @@ const Resume = ({ profileData }) => {
             </Typography>
           )}
           {!isEmpty(profileData.headline) && (
-            <Typography variant='body6' sx={{ color: '#cccccc', mb: 2 }}>
+            <Typography variant='h6' sx={{ color: '#cccccc', mb: 2 }}>
               {profileData.headline}
             </Typography>
           )}
           {!isEmpty(profileData.summary) && (
-            <Typography variant='body1' sx={{ mb: 2, maxWidth: '600px' }}>
+            <Typography
+              variant='body2'
+              sx={{
+                whiteSpace: 'pre-line',
+              }}
+            >
               {profileData.summary}
             </Typography>
           )}
@@ -92,7 +94,7 @@ const Resume = ({ profileData }) => {
         {!isEmpty(profileData.githubURL) && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <GitHubIcon fontSize='small' />
-            <Link href={profileData.githubURL} color='inherit'>
+            <Link href={profileData.githubURL} color='inherit' target='_blank'>
               GitHub
             </Link>
           </Box>
@@ -152,7 +154,7 @@ const Resume = ({ profileData }) => {
                     <Typography
                       variant='body2'
                       sx={{
-                        whiteSpace: 'pre-line', // Preserves line breaks in description
+                        whiteSpace: 'pre-line',
                       }}
                     >
                       {exp.description}

@@ -12,8 +12,8 @@ export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
       .filter((word) => word !== '');
     setWordCount(inputWords.length);
 
-    if (inputWords.length > 100) {
-      const truncatedInput = inputWords.slice(0, 100).join(' ');
+    if (inputWords.length > 20) {
+      const truncatedInput = inputWords.slice(0, 20).join(' ');
       setFormData({
         ...formData,
         headline: truncatedInput,
@@ -22,6 +22,26 @@ export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
       setFormData({
         ...formData,
         headline: e.target.value,
+      });
+    }
+  };
+
+  const handleSummaryChange = (e) => {
+    const inputWords = e.target.value
+      .split(/\s+/)
+      .filter((word) => word !== '');
+    setWordCount(inputWords.length);
+
+    if (inputWords.length > 100) {
+      const truncatedInput = inputWords.slice(0, 100).join(' ');
+      setFormData({
+        ...formData,
+        summary: truncatedInput,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        summary: e.target.value,
       });
     }
   };
@@ -50,13 +70,25 @@ export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
                 Personal Information
               </Typography>
               <TextField
-                name='headline'
-                label='About Me'
+                name='Job Title'
+                label='Job Title'
                 value={formData.headline || ''}
                 fullWidth
                 multiline
-                rows={4}
+                rows={1}
                 onChange={handleHeadlineChange}
+                helperText={`${wordCount}/20 words`}
+                size={isMobile ? 'small' : 'medium'}
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                name='Summary'
+                label='Summary'
+                value={formData.summary || ''}
+                fullWidth
+                multiline
+                rows={4}
+                onChange={handleSummaryChange}
                 helperText={`${wordCount}/100 words`}
                 size={isMobile ? 'small' : 'medium'}
                 sx={{ mb: 2 }}
