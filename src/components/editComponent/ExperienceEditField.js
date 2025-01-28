@@ -17,6 +17,7 @@ import AddIcon from '@mui/icons-material/Add';
 import BusinessIcon from '@mui/icons-material/Business';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { RichTextEditor } from './RichTextEditor';
 
 const ExperienceCard = ({ exp, index, onChange, onRemove, isSmallScreen }) => (
   <Box
@@ -147,17 +148,19 @@ const ExperienceCard = ({ exp, index, onChange, onRemove, isSmallScreen }) => (
       </Grid>
 
       <Grid item xs={12}>
-        <TextField
-          fullWidth
-          label='Description'
+        <RichTextEditor
           value={exp.description}
-          onChange={(e) => onChange(e, index, 'experience', 'description')}
-          multiline
-          rows={4}
-          size={isSmallScreen ? 'small' : 'medium'}
-          placeholder='• Led a team of 5 developers in developing a new feature
-• Improved system performance by 40%
-• Implemented CI/CD pipeline'
+          onChange={(newValue) =>
+            onChange(
+              { target: { value: newValue } },
+              index,
+              'experience',
+              'description'
+            )
+          }
+          label='Description'
+          placeholder='Led a team of 5 developers in developing a new feature&#10;• Improved system performance by 40%&#10;• Implemented CI/CD pipeline'
+          isSmallScreen={isSmallScreen}
         />
       </Grid>
 

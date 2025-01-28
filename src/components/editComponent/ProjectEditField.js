@@ -16,6 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import WorkIcon from '@mui/icons-material/Work';
 import LinkIcon from '@mui/icons-material/Link';
+import { RichTextEditor } from './RichTextEditor';
 
 const ProjectCard = ({ project, index, onChange, onRemove, isSmallScreen }) => (
   <Box
@@ -96,16 +97,19 @@ const ProjectCard = ({ project, index, onChange, onRemove, isSmallScreen }) => (
       </Grid>
 
       <Grid item xs={12}>
-        <TextField
-          fullWidth
-          label='Description'
+        <RichTextEditor
           value={project.description}
-          onChange={(e) => onChange(e, index, 'projects', 'description')}
-          variant='outlined'
-          size={isSmallScreen ? 'small' : 'medium'}
-          multiline
-          rows={3}
+          onChange={(newValue) =>
+            onChange(
+              { target: { value: newValue } },
+              index,
+              'projects',
+              'description'
+            )
+          }
+          label='Description'
           placeholder='Describe your project, technologies used, and your role...'
+          isSmallScreen={isSmallScreen}
         />
       </Grid>
 

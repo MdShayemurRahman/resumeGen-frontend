@@ -18,6 +18,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PersonIcon from '@mui/icons-material/Person';
+import { RichTextEditor } from './RichTextEditor';
 
 export const PersonalInfoField = ({ formData, setFormData }) => {
   const theme = useTheme();
@@ -188,68 +189,15 @@ export const PersonalInfoField = ({ formData, setFormData }) => {
 
             {/* Summary Section */}
             <Grid item xs={12}>
-              <Box
-                sx={{
-                  p: 2,
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  borderRadius: 1,
-                  bgcolor: 'background.paper',
-                }}
-              >
-                <Typography variant='subtitle2' color='primary' sx={{ mb: 1 }}>
-                  Professional Summary
-                </Typography>
-
-                <Box
-                  sx={{
-                    display: 'flex',
-                    gap: 1,
-                    mb: 2,
-                    borderBottom: '1px solid',
-                    borderColor: 'divider',
-                    pb: 1,
-                  }}
-                >
-                  <Tooltip title='Bold'>
-                    <IconButton
-                      size='small'
-                      onClick={() => handleFormat('bold')}
-                    >
-                      <FormatBoldIcon fontSize='small' />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title='Italic'>
-                    <IconButton
-                      size='small'
-                      onClick={() => handleFormat('italic')}
-                    >
-                      <FormatItalicIcon fontSize='small' />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title='Bullet List'>
-                    <IconButton
-                      size='small'
-                      onClick={() => handleFormat('bullet')}
-                    >
-                      <FormatListBulletedIcon fontSize='small' />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-
-                <TextField
-                  id='summaryField'
-                  fullWidth
-                  multiline
-                  rows={4}
-                  value={formData.summary || ''}
-                  onChange={handleSummaryChange}
-                  placeholder='Write a brief summary of your professional background and key skills...'
-                  size={isSmallScreen ? 'small' : 'medium'}
-                  helperText={`${wordCount}/100 words - Use formatting tools above to enhance your summary`}
-                  variant='outlined'
-                />
-              </Box>
+              <RichTextEditor
+                value={formData.summary}
+                onChange={(newValue) =>
+                  setFormData({ ...formData, summary: newValue })
+                }
+                label='Professional Summary'
+                placeholder='Write a brief summary of your professional background and key skills...'
+                isSmallScreen={isSmallScreen}
+              />
             </Grid>
 
             {/* Contact Information */}
