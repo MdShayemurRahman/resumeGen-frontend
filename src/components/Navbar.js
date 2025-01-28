@@ -1,45 +1,81 @@
-// Navbar.js
-import React from 'react';
-import { AppBar, Toolbar, Button, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Typography,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { handleLogout } from '../services/api';
 
 const Navbar = () => {
-  const handleLogout = async () => {
-    try {
-      const response = await axios.post(
-        'http://localhost:8080/auth/logout',
-        null,
-        {
-          withCredentials: true,
-        }
-      );
-      if (response.status === 200) {
-        console.log('Logged out successfully');
-      }
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
-      // Redirect to login page or update the UI to reflect the logged-out state
-      window.location.href = '/login';
+  const onLogout = async () => {
+    try {
+      await handleLogout();
+      localStorage.clear();
     } catch (error) {
-      console.error('Failed to log out:', error);
+      console.error('Logout error:', error);
+      setError('Failed to logout. Please try again.');
     }
   };
 
+  const handleCloseError = () => {
+    setError(null);
+  };
+
   return (
-    <AppBar position='static' sx={{ backgroundColor: 'primary.dark' }}>
-      <Toolbar>
-        <Typography variant='h5' sx={{ flexGrow: 1 }}>
-          User Profile
-        </Typography>
-        <Button
-          color='inherit'
-          onClick={handleLogout}
-          startIcon={<LogoutIcon />}
+    <>
+      <AppBar position='static' sx={{ backgroundColor: 'primary.dark' }}>
+        <Toolbar>
+          <Typography
+            variant='h5'
+            component='div'
+            sx={{
+              flexGrow: 1,
+              fontWeight: 'bold',
+              cursor: 'pointer',
+            }}
+            onClick={() => navigate('/dashboard')}
+          >
+            Link2Resume
+          </Typography>
+          <Button
+            color='inherit'
+            onClick={onLogout}
+            startIcon={<LogoutIcon />}
+            sx={{
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              },
+            }}
+          >
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
+
+      {/* Error Snackbar */}
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={handleCloseError}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleCloseError}
+          severity='error'
+          sx={{ width: '100%' }}
         >
-          Logout
-        </Button>
-      </Toolbar>
-    </AppBar>
+          {error}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

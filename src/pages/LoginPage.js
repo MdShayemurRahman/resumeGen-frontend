@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Typography, Container, Grid } from '@mui/material';
+import config from '../config/config';
 
 const LoginContainer = styled(Container)(({ theme }) => ({
   display: 'flex',
@@ -66,7 +67,7 @@ const FeatureDescription = styled(Typography)(({ theme }) => ({
 
 export const LoginPage = () => {
   const handleLogin = () => {
-    window.location.href = `${process.env.REACT_APP_API_URL}/auth/linkedin`;
+    window.location.href = config.LINKEDIN_AUTH_URL;
   };
 
   console.log(process.env.REACT_APP_API_URL);
@@ -79,14 +80,16 @@ export const LoginPage = () => {
         Easily create a customizable resume using your LinkedIn profile. Login
         with LinkedIn to get started!
       </LoginDescription>
+
       <Box>
-        <LoginButton onClick={handleLogin}>
+        <LoginButton onClick={handleLogin} aria-label='Sign in with LinkedIn'>
           <LoginButtonImage
             src='/signin_with_linkedin-buttons/Retina/Sign-In-Large---Default.png'
             alt='Sign in with LinkedIn'
           />
         </LoginButton>
       </Box>
+
       <Grid container spacing={4} justifyContent='center' sx={{ marginTop: 4 }}>
         <FeatureItem item xs={12} sm={6} md={4}>
           <FeatureIcon src='/icons/linkedin.png' alt='LinkedIn Integration' />
@@ -96,6 +99,7 @@ export const LoginPage = () => {
             resume.
           </FeatureDescription>
         </FeatureItem>
+
         <FeatureItem item xs={12} sm={6} md={4}>
           <FeatureIcon src='/icons/resume.png' alt='Customization' />
           <FeatureTitle variant='h6'>Customization</FeatureTitle>
@@ -104,6 +108,7 @@ export const LoginPage = () => {
             yours.
           </FeatureDescription>
         </FeatureItem>
+
         <FeatureItem item xs={12} sm={6} md={4}>
           <FeatureIcon src='/icons/save-as-pdf.png' alt='Download' />
           <FeatureTitle variant='h6'>Download</FeatureTitle>
