@@ -1,5 +1,5 @@
-// UserProfileHeader.js
 import React from 'react';
+
 import { Typography, Avatar, Box, Link } from '@mui/material';
 import { Email, Phone, LinkedIn } from '@mui/icons-material';
 
@@ -10,7 +10,10 @@ export const UserProfileHeader = ({ profileData }) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '3rem',
+        paddingTop: '1.5rem', 
+        paddingBottom: '1.5rem',
+        paddingLeft: '3rem', 
+        paddingRight: '3rem',
         backgroundColor: '#2C567A',
         color: 'primary.contrastText',
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',

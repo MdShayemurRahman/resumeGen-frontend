@@ -1,5 +1,14 @@
 import React from 'react';
-import { Container, Grid, Typography, Button, Box } from '@mui/material';
+import {
+  Container,
+  Grid,
+  Typography,
+  Button,
+  Box,
+  useTheme,
+  useMediaQuery,
+  Paper,
+} from '@mui/material';
 
 import { useForm } from '../Hooks/useForm';
 import { validateForm } from '../utils/validateForm';
@@ -11,7 +20,10 @@ import {
   ProjectField,
 } from './editComponent/index';
 
-export const EditResume = ({ profileData, onSave, onCancel }) => {
+export const EditResume = ({ profileData, onSave, onCancel, isLoading }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const initialFormData = {
     ...profileData,
     skills: profileData.skills || [],
@@ -48,94 +60,164 @@ export const EditResume = ({ profileData, onSave, onCancel }) => {
 
   return (
     <Container
+      maxWidth='lg'
       sx={{
         width: '100%',
         minHeight: '100vh',
-        padding: '2rem',
+        padding: {
+          xs: '1rem',
+          sm: '1.5rem',
+          md: '2rem',
+        },
+        '@media print': {
+          padding: 0,
+        },
       }}
     >
-      <Box mt={4} mb={4}>
-        <Typography variant='h4' align='center' gutterBottom>
-          Edit Profile
-        </Typography>
-      </Box>
+      <Paper
+        elevation={isMobile ? 0 : 2}
+        sx={{
+          padding: {
+            xs: '1rem',
+            sm: '1.5rem',
+            md: '2rem',
+          },
+          backgroundColor: 'background.paper',
+          borderRadius: '8px',
+        }}
+      >
+        <Box
+          sx={{
+            mt: { xs: 2, sm: 3, md: 4 },
+            mb: { xs: 2, sm: 3, md: 4 },
+          }}
+        >
+          <Typography
+            variant={isMobile ? 'h5' : 'h4'}
+            align='center'
+            gutterBottom
+            sx={{
+              fontWeight: 600,
+              color: 'primary.main',
+            }}
+          >
+            Edit Profile
+          </Typography>
+        </Box>
 
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={4}>
-          <PersonalInfoField formData={formData} setFormData={setFormData} />
+        <form onSubmit={handleSubmit}>
+          <Grid
+            container
+            spacing={{ xs: 2, sm: 3, md: 4 }}
+            sx={{
+              '& .MuiGrid-item': {
+                width: '100%',
+              },
+            }}
+          >
+            <PersonalInfoField
+              formData={formData}
+              setFormData={setFormData}
+              isMobile={isMobile}
+            />
 
-          <SkillField
-            skills={formData.skills}
-            onChange={handleChange}
-            onRemove={(index) => handleRemoveField('skills', index)}
-            onAdd={() => handleAddField('skills', '')}
-          />
+            <SkillField
+              skills={formData.skills}
+              onChange={handleChange}
+              onRemove={(index) => handleRemoveField('skills', index)}
+              onAdd={() => handleAddField('skills', '')}
+              isMobile={isMobile}
+            />
 
-          <EducationField
-            education={formData.education}
-            onChange={handleChange}
-            onRemove={(index) => handleRemoveField('education', index)}
-            onAdd={() =>
-              handleAddField('education', {
-                institution: '',
-                degree: '',
-                startYear: '',
-                endYear: '',
-                grade: '',
-              })
-            }
-          />
+            <EducationField
+              education={formData.education}
+              onChange={handleChange}
+              onRemove={(index) => handleRemoveField('education', index)}
+              onAdd={() =>
+                handleAddField('education', {
+                  institution: '',
+                  degree: '',
+                  startYear: '',
+                  endYear: '',
+                  grade: '',
+                })
+              }
+              isMobile={isMobile}
+            />
 
-          <ProjectField
-            projects={formData.projects}
-            onChange={handleChange}
-            onRemove={(index) => handleRemoveField('projects', index)}
-            onAdd={() =>
-              handleAddField('projects', {
-                title: '',
-                description: '',
-                link: '',
-              })
-            }
-          />
+            <ProjectField
+              projects={formData.projects}
+              onChange={handleChange}
+              onRemove={(index) => handleRemoveField('projects', index)}
+              onAdd={() =>
+                handleAddField('projects', {
+                  title: '',
+                  description: '',
+                  link: '',
+                })
+              }
+              isMobile={isMobile}
+            />
 
-          <ExperienceField
-            experience={formData.experience}
-            onChange={handleChange}
-            onRemove={(index) => handleRemoveField('experience', index)}
-            onAdd={() =>
-              handleAddField('experience', {
-                title: '',
-                company: '',
-                description: '',
-              })
-            }
-          />
+            <ExperienceField
+              experience={formData.experience}
+              onChange={handleChange}
+              onRemove={(index) => handleRemoveField('experience', index)}
+              onAdd={() =>
+                handleAddField('experience', {
+                  title: '',
+                  company: '',
+                  description: '',
+                })
+              }
+              isMobile={isMobile}
+            />
 
-          <Grid item xs={12}>
-            <Box mt={4} display='flex' justifyContent='center'>
-              <Button
-                variant='contained'
-                color='primary'
-                type='submit'
-                size='large'
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  mt: { xs: 2, sm: 3, md: 4 },
+                  display: 'flex',
+                  flexDirection: isMobile ? 'column' : 'row',
+                  justifyContent: 'center',
+                  gap: { xs: 1, sm: 2 },
+                }}
               >
-                Save
-              </Button>
-              <Box ml={2}>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  type='submit'
+                  size={isMobile ? 'medium' : 'large'}
+                  disabled={isLoading}
+                  fullWidth={isMobile}
+                  sx={{
+                    minWidth: { sm: '150px' },
+                    textTransform: 'none',
+                    fontSize: { xs: '0.9rem', sm: '1rem' },
+                  }}
+                >
+                  {isLoading ? 'Saving...' : 'Save'}
+                </Button>
                 <Button
                   variant='outlined'
                   color='secondary'
                   onClick={onCancel}
-                  size='large'
+                  size={isMobile ? 'medium' : 'large'}
+                  disabled={isLoading}
+                  fullWidth={isMobile}
+                  sx={{
+                    minWidth: { sm: '150px' },
+                    textTransform: 'none',
+                    fontSize: { xs: '0.9rem', sm: '1rem' },
+                  }}
                 >
                   Cancel
                 </Button>
               </Box>
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      </form>
+        </form>
+      </Paper>
     </Container>
   );
 };

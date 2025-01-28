@@ -7,7 +7,7 @@ const config = {
   production: {
     API_URL: 'https://link2resume-backend.onrender.com',
     LINKEDIN_AUTH_URL: 'https://link2resume-backend.onrender.com/auth/linkedin',
-    FRONTEND_URL: 'https://link2resume.netlify.app', // Update this with your frontend URL
+    FRONTEND_URL: 'https://link2resume.netlify.app', 
   },
 };
 
