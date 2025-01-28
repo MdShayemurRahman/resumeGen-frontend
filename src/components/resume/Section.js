@@ -2,14 +2,13 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 const Section = ({ title, children }) => (
-  <Box sx={{ mb: 4 }}>
+  <Box sx={{ mb: 2 }}>
     <Typography
-      variant='h5'
+      variant='h6'
       sx={{
         color: 'primary.main',
         fontWeight: 'bold',
-        mb: 2,
-        pb: 1,
+        mb: 1,
         borderBottom: '2px solid',
         borderColor: 'primary.main',
       }}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Grid,
@@ -7,8 +7,13 @@ import {
   Box,
   useTheme,
   useMediaQuery,
-  Paper,
+  Fade,
+  CircularProgress,
+  Snackbar,
+  Alert,
 } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { useForm } from '../../Hooks/useForm';
 import { validateForm } from '../../utils/validateForm';
@@ -20,32 +25,56 @@ import { ExperienceField } from './ExperienceEditField';
 import { LanguageField } from './LanguageField';
 import { CertificationField } from './CertificationField';
 
-export const EditResume = ({ profileData, onSave, onCancel, isLoading }) => {
+const INITIAL_FIELDS = {
+  education: {
+    institution: '',
+    degree: '',
+    startYear: '',
+    endYear: '',
+    grade: '',
+  },
+  projects: {
+    title: '',
+    description: '',
+    link: '',
+  },
+  experience: {
+    title: '',
+    company: '',
+    location: '',
+    startDate: '',
+    endDate: '',
+    description: '',
+  },
+  languages: {
+    name: '',
+    level: '',
+  },
+  certifications: {
+    name: '',
+    issuer: '',
+    date: '',
+  },
+};
+
+export const EditResume = ({ profileData, onSave, isLoading }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const [saveStatus, setSaveStatus] = useState({
+    open: false,
+    message: '',
+    type: 'success',
+  });
 
   const initialFormData = {
     ...profileData,
-    skills: profileData.skills || [],
-    education: profileData.education || [
-      { institution: '', degree: '', startYear: '', endYear: '', grade: '' },
-    ],
-    projects: profileData.projects || [
-      { title: '', description: '', link: '' },
-    ],
-    experience: profileData.experience || [
-      {
-        title: '',
-        company: '',
-        location: '',
-        startDate: '',
-        endDate: '',
-        description: '',
-      },
-    ],
-    languages: profileData.languages || [{ name: '', level: '' }],
-    certifications: profileData.certifications || [
-      { name: '', issuer: '', date: '' },
+    skills: profileData?.skills || [],
+    education: profileData?.education || [INITIAL_FIELDS.education],
+    projects: profileData?.projects || [INITIAL_FIELDS.projects],
+    experience: profileData?.experience || [INITIAL_FIELDS.experience],
+    languages: profileData?.languages || [INITIAL_FIELDS.languages],
+    certifications: profileData?.certifications || [
+      INITIAL_FIELDS.certifications,
     ],
   };
 
@@ -57,203 +86,246 @@ export const EditResume = ({ profileData, onSave, onCancel, isLoading }) => {
     handleRemoveField,
   ] = useForm(initialFormData);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submission triggered'); // Debug log
 
+    // Validate form
     const errors = validateForm(formData);
     if (errors.length > 0) {
-      alert(errors.join('\n'));
+      console.log('Validation errors:', errors); // Debug log
+      setSaveStatus({
+        open: true,
+        message: errors.join('\n'),
+        type: 'error',
+      });
       return;
     }
 
-    onSave(formData);
+    try {
+      console.log('Calling onSave with formData:', formData); // Debug log
+      await onSave(formData);
+
+      setSaveStatus({
+        open: true,
+        message: 'Profile updated successfully!',
+        type: 'success',
+      });
+    } catch (error) {
+      console.error('Save error:', error);
+      setSaveStatus({
+        open: true,
+        message: error.message || 'Failed to update profile. Please try again.',
+        type: 'error',
+      });
+    }
   };
+
+  const handleCloseSnackbar = () => {
+    setSaveStatus((prev) => ({ ...prev, open: false }));
+  };
+
+  const sections = [
+    {
+      component: PersonalInfoField,
+      props: { formData, setFormData, isSmallScreen },
+    },
+    {
+      component: SkillField,
+      props: {
+        skills: formData.skills,
+        onChange: handleChange,
+        onRemove: (index) => handleRemoveField('skills', index),
+        onAdd: () => handleAddField('skills', ''),
+        isSmallScreen,
+      },
+    },
+    {
+      component: ExperienceField,
+      props: {
+        experience: formData.experience,
+        onChange: handleChange,
+        onRemove: (index) => handleRemoveField('experience', index),
+        onAdd: () => handleAddField('experience', INITIAL_FIELDS.experience),
+        isSmallScreen,
+      },
+    },
+    {
+      component: EducationField,
+      props: {
+        education: formData.education,
+        onChange: handleChange,
+        onRemove: (index) => handleRemoveField('education', index),
+        onAdd: () => handleAddField('education', INITIAL_FIELDS.education),
+        isSmallScreen,
+      },
+    },
+    {
+      component: ProjectField,
+      props: {
+        projects: formData.projects,
+        onChange: handleChange,
+        onRemove: (index) => handleRemoveField('projects', index),
+        onAdd: () => handleAddField('projects', INITIAL_FIELDS.projects),
+        isSmallScreen,
+      },
+    },
+    {
+      component: LanguageField,
+      props: {
+        languages: formData.languages,
+        onChange: handleChange,
+        onRemove: (index) => handleRemoveField('languages', index),
+        onAdd: () => handleAddField('languages', INITIAL_FIELDS.languages),
+        isSmallScreen,
+      },
+    },
+    {
+      component: CertificationField,
+      props: {
+        certifications: formData.certifications,
+        onChange: handleChange,
+        onRemove: (index) => handleRemoveField('certifications', index),
+        onAdd: () =>
+          handleAddField('certifications', INITIAL_FIELDS.certifications),
+        isSmallScreen,
+      },
+    },
+  ];
 
   return (
     <Container
-      maxWidth='lg'
+      maxWidth={false}
+      disableGutters
       sx={{
-        width: '100%',
-        minHeight: '100vh',
-        padding: {
-          xs: '1rem',
-          sm: '1.5rem',
-          md: '2rem',
-        },
-        '@media print': {
-          padding: 0,
-        },
+        height: '100%',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      <Paper
-        elevation={isMobile ? 0 : 2}
+      <Box
         sx={{
-          padding: {
-            xs: '1rem',
-            sm: '1.5rem',
-            md: '2rem',
-          },
-          backgroundColor: 'background.paper',
-          borderRadius: '8px',
+          p: { xs: 2, sm: 2.5, md: 3 },
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+          bgcolor: 'background.paper',
         }}
       >
-        <Box
+        <EditIcon color='primary' />
+        <Typography
+          variant={isSmallScreen ? 'h6' : 'h5'}
           sx={{
-            mt: { xs: 2, sm: 3, md: 4 },
-            mb: { xs: 2, sm: 3, md: 4 },
+            fontWeight: 600,
+            color: 'primary.main',
           }}
         >
-          <Typography
-            variant={isMobile ? 'h5' : 'h4'}
-            align='center'
-            gutterBottom
-            sx={{
-              fontWeight: 600,
-              color: 'primary.main',
-            }}
-          >
-            Edit Profile
-          </Typography>
-        </Box>
+          Edit Resume
+        </Typography>
+      </Box>
 
-        <form onSubmit={handleSubmit}>
+      {/* Main form - note this is now the entire content area including the button */}
+      <Box
+        component='form'
+        onSubmit={handleSubmit}
+        noValidate
+        sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column', // Added to enable proper content/button layout
+          overflow: 'hidden', // Changed from overflowY to handle overall container
+        }}
+      >
+        {/* Scrollable content area */}
+        <Box
+          sx={{
+            flex: 1,
+            overflowY: 'auto',
+            p: { xs: 2, sm: 2.5, md: 3 },
+            bgcolor: 'grey.50',
+          }}
+        >
           <Grid
             container
-            spacing={{ xs: 2, sm: 3, md: 4 }}
+            spacing={3}
             sx={{
-              '& .MuiGrid-item': {
-                width: '100%',
+              maxWidth: '100%',
+              margin: '0 auto',
+            }}
+          >
+            {sections.map((Section, index) => (
+              <Fade in={true} key={index} timeout={300 + index * 100}>
+                <Grid item xs={12}>
+                  <Section.component {...Section.props} />
+                </Grid>
+              </Fade>
+            ))}
+          </Grid>
+        </Box>
+
+        {/* Save button area - now inside the form */}
+        <Box
+          sx={{
+            p: { xs: 2, sm: 2.5, md: 3 },
+            borderTop: '1px solid',
+            borderColor: 'divider',
+            bgcolor: 'background.paper',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Button
+            variant='contained'
+            color='primary'
+            type='submit'
+            disabled={isLoading}
+            startIcon={!isLoading && <SaveIcon />}
+            sx={{
+              minWidth: '160px',
+              textTransform: 'none',
+              borderRadius: '20px',
+              px: 4,
+              '&:hover': {
+                backgroundColor: 'primary.dark',
               },
             }}
           >
-            <PersonalInfoField
-              formData={formData}
-              setFormData={setFormData}
-              isMobile={isMobile}
-            />
-
-            <SkillField
-              skills={formData.skills}
-              onChange={handleChange}
-              onRemove={(index) => handleRemoveField('skills', index)}
-              onAdd={() => handleAddField('skills', '')}
-              isMobile={isMobile}
-            />
-
-            <EducationField
-              education={formData.education}
-              onChange={handleChange}
-              onRemove={(index) => handleRemoveField('education', index)}
-              onAdd={() =>
-                handleAddField('education', {
-                  institution: '',
-                  degree: '',
-                  startYear: '',
-                  endYear: '',
-                  grade: '',
-                })
-              }
-              isMobile={isMobile}
-            />
-
-            <ProjectField
-              projects={formData.projects}
-              onChange={handleChange}
-              onRemove={(index) => handleRemoveField('projects', index)}
-              onAdd={() =>
-                handleAddField('projects', {
-                  title: '',
-                  description: '',
-                  link: '',
-                })
-              }
-              isMobile={isMobile}
-            />
-
-            <ExperienceField
-              experience={formData.experience}
-              onChange={handleChange}
-              onRemove={(index) => handleRemoveField('experience', index)}
-              onAdd={() =>
-                handleAddField('experience', {
-                  title: '',
-                  company: '',
-                  location: '', 
-                  startDate: '', 
-                  endDate: '',
-                  description: '',
-                })
-              }
-              isMobile={isMobile}
-            />
-
-            <LanguageField
-              languages={formData.languages}
-              onChange={handleChange}
-              onRemove={(index) => handleRemoveField('languages', index)}
-              onAdd={() => handleAddField('languages', { name: '', level: '' })}
-              isMobile={isMobile}
-            />
-
-            <CertificationField
-              certifications={formData.certifications}
-              onChange={handleChange}
-              onRemove={(index) => handleRemoveField('certifications', index)}
-              onAdd={() =>
-                handleAddField('certifications', {
-                  name: '',
-                  issuer: '',
-                  date: '',
-                })
-              }
-              isMobile={isMobile}
-            />
-
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  mt: { xs: 2, sm: 3, md: 4 },
-                  display: 'flex',
-                  flexDirection: isMobile ? 'column' : 'row',
-                  justifyContent: 'center',
-                  gap: { xs: 1, sm: 2 },
-                }}
-              >
-                <Button
-                  variant='contained'
-                  color='primary'
-                  type='submit'
-                  size={isMobile ? 'medium' : 'large'}
-                  disabled={isLoading}
-                  fullWidth={isMobile}
-                  sx={{
-                    minWidth: { sm: '150px' },
-                    textTransform: 'none',
-                    fontSize: { xs: '0.9rem', sm: '1rem' },
-                  }}
-                >
-                  {isLoading ? 'Saving...' : 'Save'}
-                </Button>
-                <Button
-                  variant='outlined'
-                  color='secondary'
-                  onClick={onCancel}
-                  size={isMobile ? 'medium' : 'large'}
-                  disabled={isLoading}
-                  fullWidth={isMobile}
-                  sx={{
-                    minWidth: { sm: '150px' },
-                    textTransform: 'none',
-                    fontSize: { xs: '0.9rem', sm: '1rem' },
-                  }}
-                >
-                  Cancel
-                </Button>
+            {isLoading ? (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <CircularProgress size={16} color='inherit' />
+                Saving...
               </Box>
-            </Grid>
-          </Grid>
-        </form>
-      </Paper>
+            ) : (
+              'Save Changes'
+            )}
+          </Button>
+        </Box>
+      </Box>
+
+      <Snackbar
+        open={saveStatus.open}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={saveStatus.type}
+          variant='filled'
+          elevation={6}
+          sx={{
+            width: '100%',
+            '& .MuiAlert-message': {
+              fontSize: '0.9rem',
+            },
+          }}
+        >
+          {saveStatus.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

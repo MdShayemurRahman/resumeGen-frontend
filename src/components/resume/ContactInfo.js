@@ -16,7 +16,7 @@ const ContactInfo = ({ email, phone, githubURL, linkedinURL }) => {
         alignItems: 'center',
         gap: 3,
         flexWrap: 'wrap',
-        p: 1,
+        pt: 1,
       }}
     >
       {!isEmpty(email) && (

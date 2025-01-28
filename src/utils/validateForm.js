@@ -1,5 +1,3 @@
-// src/utils/validateForm.js
-
 export const validateForm = (formData) => {
   const errors = [];
 
@@ -16,8 +14,6 @@ export const validateForm = (formData) => {
   if (hasEmptyExperienceCompany) {
     errors.push('Experience company cannot be empty');
   }
-
-  // Validate education fields
   const hasEmptyEducationInstitution = formData.education.some(
     (edu) => !edu.institution.trim()
   );

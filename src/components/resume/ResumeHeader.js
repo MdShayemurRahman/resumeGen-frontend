@@ -9,7 +9,7 @@ const ResumeHeader = ({ user, headline, summary }) => {
       sx={{
         bgcolor: '#1a1a1a',
         color: 'white',
-        p: 4,
+        p: 3,
         display: 'flex',
         gap: 3,
       }}
@@ -27,12 +27,12 @@ const ResumeHeader = ({ user, headline, summary }) => {
       )}
       <Box>
         {!isEmpty(user?.fullName) && (
-          <Typography variant='h4' sx={{ fontWeight: 'bold', mb: 1 }}>
+          <Typography variant='h4' sx={{ fontWeight: 'bold' }}>
             {user.fullName.toUpperCase()}
           </Typography>
         )}
         {!isEmpty(headline) && (
-          <Typography variant='h6' sx={{ color: '#cccccc', mb: 2 }}>
+          <Typography variant='h6' sx={{ color: '#cccccc', mb: 1 }}>
             {headline}
           </Typography>
         )}

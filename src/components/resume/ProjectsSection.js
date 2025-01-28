@@ -10,14 +10,14 @@ const ProjectsSection = ({ projects }) => {
   return (
     <Section title='Projects'>
       {projects.map((project, index) => (
-        <Box key={index} sx={{ mb: 3 }}>
+        <Box key={index} sx={{ mb: 1 }}>
           {!isEmpty(project.title) && (
-            <Typography variant='h6' sx={{ fontWeight: 'bold' }}>
+            <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>
               {project.title}
             </Typography>
           )}
           {!isEmpty(project.description) && (
-            <Typography variant='body2' sx={{ mb: 1 }}>
+            <Typography variant='body2' sx={{ mb: 0.4 }}>
               {project.description}
             </Typography>
           )}

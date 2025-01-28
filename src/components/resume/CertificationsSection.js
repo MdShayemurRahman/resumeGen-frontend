@@ -9,7 +9,7 @@ const CertificationsSection = ({ certifications }) => {
   return (
     <Section title='Certifications'>
       {certifications.map((cert, index) => (
-        <Box key={index} sx={{ mb: 2 }}>
+        <Box key={index} sx={{ mb: 1 }}>
           {!isEmpty(cert.name) && (
             <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>
               {cert.name}

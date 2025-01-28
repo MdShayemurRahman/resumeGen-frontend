@@ -9,7 +9,7 @@ const EducationSection = ({ education }) => {
   return (
     <Section title='Education'>
       {education.map((edu, index) => (
-        <Box key={index} sx={{ mb: 3 }}>
+        <Box key={index} sx={{ mb: 1 }}>
           {!isEmpty(edu.degree) && (
             <Typography variant='h6' sx={{ fontWeight: 'bold' }}>
               {edu.degree}

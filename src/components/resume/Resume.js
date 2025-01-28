@@ -35,13 +35,11 @@ const Resume = ({ profileData }) => {
       />
 
       <Grid container sx={{ p: 4 }} spacing={4}>
-        {/* Left Column */}
         <Grid item xs={7}>
           <ExperienceSection experiences={profileData.experience} />
           <ProjectsSection projects={profileData.projects} />
         </Grid>
 
-        {/* Right Column */}
         <Grid item xs={5}>
           <SkillsSection skills={profileData.skills} />
           <EducationSection education={profileData.education} />

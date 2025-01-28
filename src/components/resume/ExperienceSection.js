@@ -10,7 +10,7 @@ const ExperienceSection = ({ experiences }) => {
   return (
     <Section title='Work Experience'>
       {experiences.map((exp, index) => (
-        <Box key={index} sx={{ mb: 3 }}>
+        <Box key={index} sx={{ mb: 1 }}>
           {!isEmpty(exp.title) && (
             <Typography variant='h6' sx={{ fontWeight: 'bold' }}>
               {exp.title}

@@ -7,12 +7,21 @@ import {
   Box,
   IconButton,
   Tooltip,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import WorkIcon from '@mui/icons-material/Work';
+import PhoneIcon from '@mui/icons-material/Phone';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import PersonIcon from '@mui/icons-material/Person';
 
-export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
+export const PersonalInfoField = ({ formData, setFormData }) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [wordCount, setWordCount] = useState(
     formData.headline?.split(/\s+/).filter((word) => word !== '').length || 0
   );
@@ -74,6 +83,7 @@ export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
       default:
         break;
     }
+
     const inputWords = newText.split(/\s+/).filter((word) => word !== '');
     if (inputWords.length <= 100) {
       setFormData({
@@ -118,40 +128,84 @@ export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
 
   return (
     <Grid item xs={12}>
-      <Paper elevation={isMobile ? 1 : 3}>
-        <Box p={{ xs: 2, sm: 3 }}>
-          <Grid container spacing={2}>
+      <Paper
+        elevation={isSmallScreen ? 1 : 3}
+        sx={{
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            boxShadow: isSmallScreen ? 2 : 4,
+          },
+        }}
+      >
+        <Box
+          sx={{
+            p: { xs: 2, sm: 2.5, md: 3 },
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              mb: { xs: 2, sm: 2.5, md: 3 },
+              borderBottom: '2px solid',
+              borderColor: 'primary.light',
+              pb: 1,
+            }}
+          >
+            <PersonIcon color='primary' sx={{ mr: 1 }} />
+            <Typography
+              variant={isSmallScreen ? 'subtitle1' : 'h6'}
+              sx={{
+                fontWeight: 600,
+                color: 'primary.main',
+              }}
+            >
+              Personal Information
+            </Typography>
+          </Box>
+
+          <Grid container spacing={3}>
+            {/* Professional Title Section */}
             <Grid item xs={12}>
-              <Typography
-                variant={isMobile ? 'subtitle1' : 'h6'}
-                sx={{
-                  mb: 3,
-                  fontWeight: 600,
-                  color: 'primary.main',
-                }}
-              >
-                Personal Information
-              </Typography>
               <TextField
                 name='Job Title'
-                label='Job Title'
+                label='Professional Title'
                 value={formData.headline || ''}
                 fullWidth
                 multiline
                 rows={1}
                 onChange={handleHeadlineChange}
                 helperText={`${wordCount}/100 words`}
-                size={isMobile ? 'small' : 'medium'}
-                sx={{ mb: 2 }}
+                size={isSmallScreen ? 'small' : 'medium'}
+                placeholder='e.g., Senior Full Stack Developer'
+                InputProps={{
+                  startAdornment: (
+                    <WorkIcon sx={{ mr: 1, color: 'text.secondary' }} />
+                  ),
+                }}
               />
+            </Grid>
 
-              {/* Summary field with formatting toolbar */}
-              <Box sx={{ mb: 2 }}>
+            {/* Summary Section */}
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  p: 2,
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: 1,
+                  bgcolor: 'background.paper',
+                }}
+              >
+                <Typography variant='subtitle2' color='primary' sx={{ mb: 1 }}>
+                  Professional Summary
+                </Typography>
+
                 <Box
                   sx={{
                     display: 'flex',
                     gap: 1,
-                    mb: 1,
+                    mb: 2,
                     borderBottom: '1px solid',
                     borderColor: 'divider',
                     pb: 1,
@@ -182,59 +236,91 @@ export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
                     </IconButton>
                   </Tooltip>
                 </Box>
+
                 <TextField
                   id='summaryField'
-                  name='Summary'
-                  label='Summary'
-                  value={formData.summary || ''}
                   fullWidth
                   multiline
                   rows={4}
+                  value={formData.summary || ''}
                   onChange={handleSummaryChange}
-                  helperText={`${wordCount}/100 words`}
-                  size={isMobile ? 'small' : 'medium'}
+                  placeholder='Write a brief summary of your professional background and key skills...'
+                  size={isSmallScreen ? 'small' : 'medium'}
+                  helperText={`${wordCount}/100 words - Use formatting tools above to enhance your summary`}
+                  variant='outlined'
                 />
               </Box>
             </Grid>
 
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                name='phone'
-                label='Phone'
-                value={formData.phone || ''}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
-                size={isMobile ? 'small' : 'medium'}
-                placeholder='+358 XX XXX XXXX'
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                name='githubURL'
-                label='GitHub URL'
-                value={formData.githubURL || ''}
-                onChange={handleUserDataChange('githubURL')}
-                size={isMobile ? 'small' : 'medium'}
-                placeholder='https://github.com/username'
-                helperText='e.g., https://github.com/username'
-              />
-            </Grid>
-
+            {/* Contact Information */}
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                name='linkedinURL'
-                label='LinkedIn URL'
-                value={formData.user?.linkedinURL || ''}
-                onChange={handleUserDataChange('linkedinURL')}
-                size={isMobile ? 'small' : 'medium'}
-                placeholder='https://linkedin.com/in/username'
-                helperText='e.g., https://linkedin.com/in/username'
-              />
+              <Typography
+                variant='subtitle2'
+                color='primary'
+                sx={{
+                  mb: 2,
+                  borderBottom: '1px solid',
+                  borderColor: 'divider',
+                  pb: 1,
+                }}
+              >
+                Contact Information
+              </Typography>
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    name='phone'
+                    label='Phone Number'
+                    value={formData.phone || ''}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value })
+                    }
+                    size={isSmallScreen ? 'small' : 'medium'}
+                    placeholder='+358 XX XXX XXXX'
+                    InputProps={{
+                      startAdornment: (
+                        <PhoneIcon sx={{ mr: 1, color: 'text.secondary' }} />
+                      ),
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    name='githubURL'
+                    label='GitHub Profile'
+                    value={formData.githubURL || ''}
+                    onChange={handleUserDataChange('githubURL')}
+                    size={isSmallScreen ? 'small' : 'medium'}
+                    placeholder='https://github.com/username'
+                    InputProps={{
+                      startAdornment: (
+                        <GitHubIcon sx={{ mr: 1, color: 'text.secondary' }} />
+                      ),
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    name='linkedinURL'
+                    label='LinkedIn Profile'
+                    value={formData.user?.linkedinURL || ''}
+                    onChange={handleUserDataChange('linkedinURL')}
+                    size={isSmallScreen ? 'small' : 'medium'}
+                    placeholder='https://linkedin.com/in/username'
+                    InputProps={{
+                      startAdornment: (
+                        <LinkedInIcon sx={{ mr: 1, color: 'text.secondary' }} />
+                      ),
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Box>

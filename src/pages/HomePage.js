@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Grid, Typography, Container, Alert, Snackbar } from '@mui/material';
 
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navbar/Navbar';
 import Resume from '../components/resume/Resume';
 import Settings from '../components/Settings';
 import LoadingComponent from '../components/Loading';
@@ -48,9 +48,18 @@ const HomePage = () => {
   const handleSaveProfile = async (formData) => {
     try {
       setIsLoading(true);
-      await updateUserProfile(profileData.user._id.toString(), formData);
+      // Make sure we're sending the user ID correctly
+      const userId = profileData.user._id.toString();
+      console.log('Saving profile for user:', userId); // Debug log
+
+      // Update the profile
+      await updateUserProfile(userId, formData);
+
+      // Fetch updated data
       const updatedProfileData = await fetchUserProfile(id);
       setProfileData(updatedProfileData);
+
+      // Show success notification
       setNotification({
         open: true,
         message: 'Profile updated successfully',
@@ -60,7 +69,7 @@ const HomePage = () => {
       console.error('Error updating profile:', error);
       setNotification({
         open: true,
-        message: 'Failed to update profile',
+        message: 'Failed to update profile. Please try again.',
         type: 'error',
       });
     } finally {
