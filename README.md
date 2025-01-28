@@ -1,70 +1,111 @@
-# Getting Started with Create React App
+# Link2Resume
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Link2Resume is a web-based application designed to streamline the process of creating and managing professional resumes. It allows users to log in using LinkedIn, automatically retrieve profile details, and customize their resumes with additional information such as skills, education, projects, and experience.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **LinkedIn Integration**: Login using LinkedIn and fetch profile information.
+- **Resume Builder**: Create, update, and view resumes seamlessly.
+- **Customization**: Add skills, education, projects, and work experience.
+- **Dynamic Preview**: View real-time changes to your resume.
+- **Secure Storage**: Data is securely stored using MongoDB.
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Frontend**: React, Axios
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB with Mongoose
+- **Authentication**: LinkedIn OAuth 2.0
+- **Environment Variables**: Configured using `.env` files
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Prerequisites
 
-### `npm test`
+Ensure you have the following installed:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js (v14+)
+- MongoDB (local or cloud instance)
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/MdShayemurRahman/resumeGen-backend.git backend
+   git clone https://github.com/MdShayemurRahman/resumeGen-frontend.git frontend
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Install dependencies:
+   ```bash
+   cd ./frontend
+   npm install
+   cd ../backend
+   npm install
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Create a `.env` file in the backend root directory and configure the following variables:
+   ```env
+   PORT=8080
+   DB_URL=<your_mongo_db_url>
+   SESSION_SECRET=<your_session_secret>
+   LINKEDIN_CLIENT_ID=<your_linkedin_client_id>
+   LINKEDIN_CLIENT_SECRET=<your_linkedin_client_secret>
+   LINKEDIN_CALLBACK_URL=http://localhost:8080/auth/linkedin/callback
+   NODE_ENV=development
+   FRONTEND_URL=http://localhost:3000
+   ```
 
-### `npm run eject`
+4. Start the server:
+   ```bash
+   npm run server
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+5. Start the frontend (if applicable):
+   ```bash
+   cd ../frontend
+   npm start
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## API Endpoints
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Authentication
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **GET /auth/linkedin**: Redirects to LinkedIn for authentication.
+- **GET /auth/linkedin/callback**: Handles the LinkedIn callback and user authentication.
 
-## Learn More
+### Resume Management
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **POST /cv**: Create or update a resume.
+- **GET /cv/:userId**: Retrieve a resume by user ID.
+- **PATCH /cv/:userId**: Update specific fields in a resume.
+- **DELETE /cv/:userId**: Delete a resume by user ID.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Usage
 
-### Code Splitting
+1. **Login via LinkedIn**:
+   - Users authenticate with LinkedIn to retrieve their profile details.
+   - On successful login, they are redirected to their profile page.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+2. **Create/Update Resume**:
+   - Add additional information like skills, education, projects, and experience.
 
-### Analyzing the Bundle Size
+3. **Preview Resume**:
+   - View a dynamic preview of the resume in the application.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+4. **Manage Data**:
+   - Use the provided APIs for CRUD operations on resume data.
 
-### Making a Progressive Web App
+## Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Contributions are welcome! To contribute:
 
-### Advanced Configuration
+1. Fork the repository.
+2. Create a new branch for your feature/bug fix.
+3. Commit your changes and push them to your fork.
+4. Open a pull request with a detailed description of your changes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## License
 
-### Deployment
+This project is licensed under the MIT License. See the LICENSE file for details.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Feel free to read my [Thesis Documentation](https://urn.fi/URN:NBN:fi:amk-2024061022475) about creating dynamic resume with Linkedin Integration.
