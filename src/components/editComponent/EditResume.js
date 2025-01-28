@@ -127,11 +127,11 @@ export const EditResume = ({ profileData, onSave, isLoading }) => {
 
   const sections = [
     {
-      component: PersonalInfoField,
+      Component: PersonalInfoField,
       props: { formData, setFormData, isSmallScreen },
     },
     {
-      component: SkillField,
+      Component: SkillField,
       props: {
         skills: formData.skills,
         onChange: handleChange,
@@ -141,7 +141,7 @@ export const EditResume = ({ profileData, onSave, isLoading }) => {
       },
     },
     {
-      component: ExperienceField,
+      Component: ExperienceField,
       props: {
         experience: formData.experience,
         onChange: handleChange,
@@ -151,7 +151,7 @@ export const EditResume = ({ profileData, onSave, isLoading }) => {
       },
     },
     {
-      component: EducationField,
+      Component: EducationField,
       props: {
         education: formData.education,
         onChange: handleChange,
@@ -161,7 +161,7 @@ export const EditResume = ({ profileData, onSave, isLoading }) => {
       },
     },
     {
-      component: ProjectField,
+      Component: ProjectField,
       props: {
         projects: formData.projects,
         onChange: handleChange,
@@ -171,7 +171,7 @@ export const EditResume = ({ profileData, onSave, isLoading }) => {
       },
     },
     {
-      component: LanguageField,
+      Component: LanguageField,
       props: {
         languages: formData.languages,
         onChange: handleChange,
@@ -181,7 +181,7 @@ export const EditResume = ({ profileData, onSave, isLoading }) => {
       },
     },
     {
-      component: CertificationField,
+      Component: CertificationField,
       props: {
         certifications: formData.certifications,
         onChange: handleChange,
@@ -227,7 +227,6 @@ export const EditResume = ({ profileData, onSave, isLoading }) => {
         </Typography>
       </Box>
 
-      {/* Main form - note this is now the entire content area including the button */}
       <Box
         component='form'
         onSubmit={handleSubmit}
@@ -235,11 +234,10 @@ export const EditResume = ({ profileData, onSave, isLoading }) => {
         sx={{
           flex: 1,
           display: 'flex',
-          flexDirection: 'column', // Added to enable proper content/button layout
-          overflow: 'hidden', // Changed from overflowY to handle overall container
+          flexDirection: 'column',
+          overflow: 'hidden',
         }}
       >
-        {/* Scrollable content area */}
         <Box
           sx={{
             flex: 1,
@@ -259,14 +257,13 @@ export const EditResume = ({ profileData, onSave, isLoading }) => {
             {sections.map((Section, index) => (
               <Fade in={true} key={index} timeout={300 + index * 100}>
                 <Grid item xs={12}>
-                  <Section.component {...Section.props} />
+                  <Section.Component {...Section.props} />
                 </Grid>
               </Fade>
             ))}
           </Grid>
         </Box>
 
-        {/* Save button area - now inside the form */}
         <Box
           sx={{
             p: { xs: 2, sm: 2.5, md: 3 },

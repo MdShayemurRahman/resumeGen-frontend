@@ -5,14 +5,9 @@ import {
   Typography,
   Paper,
   Box,
-  IconButton,
-  Tooltip,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
-import FormatItalicIcon from '@mui/icons-material/FormatItalic';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import WorkIcon from '@mui/icons-material/Work';
 import PhoneIcon from '@mui/icons-material/Phone';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -43,79 +38,6 @@ export const PersonalInfoField = ({ formData, setFormData }) => {
       setFormData({
         ...formData,
         headline: e.target.value,
-      });
-    }
-  };
-
-  const handleFormat = (command) => {
-    const textarea = document.querySelector('#summaryField');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = formData.summary?.substring(start, end) || '';
-
-    let newText = formData.summary || '';
-    let newStart = start;
-    let newEnd = end;
-
-    switch (command) {
-      case 'bold':
-        newText =
-          newText.substring(0, start) +
-          `**${selectedText}**` +
-          newText.substring(end);
-        newEnd += 4;
-        break;
-      case 'italic':
-        newText =
-          newText.substring(0, start) +
-          `*${selectedText}*` +
-          newText.substring(end);
-        newEnd += 2;
-        break;
-      case 'bullet':
-        const lines = selectedText.split('\n');
-        const bulletedLines = lines
-          .map((line) => `• ${line.trim()}`)
-          .join('\n');
-        newText =
-          newText.substring(0, start) + bulletedLines + newText.substring(end);
-        newEnd = start + bulletedLines.length;
-        break;
-      default:
-        break;
-    }
-
-    const inputWords = newText.split(/\s+/).filter((word) => word !== '');
-    if (inputWords.length <= 100) {
-      setFormData({
-        ...formData,
-        summary: newText,
-      });
-      setWordCount(inputWords.length);
-
-      setTimeout(() => {
-        textarea.focus();
-        textarea.setSelectionRange(newStart, newEnd);
-      }, 0);
-    }
-  };
-
-  const handleSummaryChange = (e) => {
-    const inputWords = e.target.value
-      .split(/\s+/)
-      .filter((word) => word !== '');
-    setWordCount(inputWords.length);
-
-    if (inputWords.length > 100) {
-      const truncatedInput = inputWords.slice(0, 100).join(' ');
-      setFormData({
-        ...formData,
-        summary: truncatedInput,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        summary: e.target.value,
       });
     }
   };
