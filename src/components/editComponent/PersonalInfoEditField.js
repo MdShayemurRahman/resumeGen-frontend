@@ -23,8 +23,8 @@ export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
       .filter((word) => word !== '');
     setWordCount(inputWords.length);
 
-    if (inputWords.length > 20) {
-      const truncatedInput = inputWords.slice(0, 20).join(' ');
+    if (inputWords.length > 100) {
+      const truncatedInput = inputWords.slice(0, 100).join(' ');
       setFormData({
         ...formData,
         headline: truncatedInput,
@@ -140,7 +140,7 @@ export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
                 multiline
                 rows={1}
                 onChange={handleHeadlineChange}
-                helperText={`${wordCount}/20 words`}
+                helperText={`${wordCount}/100 words`}
                 size={isMobile ? 'small' : 'medium'}
                 sx={{ mb: 2 }}
               />

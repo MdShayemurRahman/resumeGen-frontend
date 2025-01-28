@@ -29,7 +29,7 @@ const GoHomeButton = styled(Button)(({ theme }) => ({
   fontSize: '1.2rem',
 }));
 
-export const PageNotFoundPage = () => {
+const PageNotFoundPage = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
@@ -46,3 +46,5 @@ export const PageNotFoundPage = () => {
     </PageNotFoundContainer>
   );
 };
+
+export default PageNotFoundPage;

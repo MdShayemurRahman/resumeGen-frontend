@@ -124,7 +124,7 @@ const MainTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -189,3 +189,5 @@ export const LoginPage = () => {
     </LoginContainer>
   );
 };
+
+export default LoginPage;

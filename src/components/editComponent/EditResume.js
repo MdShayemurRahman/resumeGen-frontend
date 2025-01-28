@@ -10,15 +10,15 @@ import {
   Paper,
 } from '@mui/material';
 
-import { useForm } from '../Hooks/useForm';
-import { validateForm } from '../utils/validateForm';
-import { PersonalInfoField } from './editComponent/PersonalInfoEditField';
-import { SkillField } from './editComponent/SkillEditField';
-import { EducationField } from './editComponent/EducationEditField';
-import { ProjectField } from './editComponent/ProjectEditField';
-import { ExperienceField } from './editComponent/ExperienceEditField';
-import { LanguageField } from './editComponent/LanguageField';
-import { CertificationField } from './editComponent/CertificationField';
+import { useForm } from '../../Hooks/useForm';
+import { validateForm } from '../../utils/validateForm';
+import { PersonalInfoField } from './PersonalInfoEditField';
+import { SkillField } from './SkillEditField';
+import { EducationField } from './EducationEditField';
+import { ProjectField } from './ProjectEditField';
+import { ExperienceField } from './ExperienceEditField';
+import { LanguageField } from './LanguageField';
+import { CertificationField } from './CertificationField';
 
 export const EditResume = ({ profileData, onSave, onCancel, isLoading }) => {
   const theme = useTheme();

@@ -3,11 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Grid, Typography, Container, Alert, Snackbar } from '@mui/material';
 
 import Navbar from '../components/Navbar';
-import Resume from '../components/Resume';
+import Resume from '../components/resume/Resume';
 import Settings from '../components/Settings';
 import LoadingComponent from '../components/Loading';
 import { fetchUserProfile, updateUserProfile } from '../services/api';
-import { EditResume } from '../components/EditResume';
+import { EditResume } from '../components/editComponent/EditResume';
 
 const HomePage = () => {
   const { id } = useParams();
