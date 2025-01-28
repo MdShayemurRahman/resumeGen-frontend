@@ -12,13 +12,13 @@ import {
 
 import { useForm } from '../Hooks/useForm';
 import { validateForm } from '../utils/validateForm';
-import {
-  PersonalInfoField,
-  ExperienceField,
-  SkillField,
-  EducationField,
-  ProjectField,
-} from './editComponent/index';
+import { PersonalInfoField } from './editComponent/PersonalInfoEditField';
+import { SkillField } from './editComponent/SkillEditField';
+import { EducationField } from './editComponent/EducationEditField';
+import { ProjectField } from './editComponent/ProjectEditField';
+import { ExperienceField } from './editComponent/ExperienceEditField';
+import { LanguageField } from './editComponent/LanguageField';
+import { CertificationField } from './editComponent/CertificationField';
 
 export const EditResume = ({ profileData, onSave, onCancel, isLoading }) => {
   const theme = useTheme();
@@ -34,7 +34,18 @@ export const EditResume = ({ profileData, onSave, onCancel, isLoading }) => {
       { title: '', description: '', link: '' },
     ],
     experience: profileData.experience || [
-      { title: '', company: '', description: '' },
+      {
+        title: '',
+        company: '',
+        location: '',
+        startDate: '',
+        endDate: '',
+        description: '',
+      },
+    ],
+    languages: profileData.languages || [{ name: '', level: '' }],
+    certifications: profileData.certifications || [
+      { name: '', issuer: '', date: '' },
     ],
   };
 
@@ -167,7 +178,32 @@ export const EditResume = ({ profileData, onSave, onCancel, isLoading }) => {
                 handleAddField('experience', {
                   title: '',
                   company: '',
+                  location: '', 
+                  startDate: '', 
+                  endDate: '',
                   description: '',
+                })
+              }
+              isMobile={isMobile}
+            />
+
+            <LanguageField
+              languages={formData.languages}
+              onChange={handleChange}
+              onRemove={(index) => handleRemoveField('languages', index)}
+              onAdd={() => handleAddField('languages', { name: '', level: '' })}
+              isMobile={isMobile}
+            />
+
+            <CertificationField
+              certifications={formData.certifications}
+              onChange={handleChange}
+              onRemove={(index) => handleRemoveField('certifications', index)}
+              onAdd={() =>
+                handleAddField('certifications', {
+                  name: '',
+                  issuer: '',
+                  date: '',
                 })
               }
               isMobile={isMobile}

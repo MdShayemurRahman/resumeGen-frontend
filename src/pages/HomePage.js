@@ -23,7 +23,6 @@ const HomePage = () => {
   });
   const componentRef = useRef();
 
-  // Fetch profile data
   useEffect(() => {
     const fetchData = async () => {
       try {

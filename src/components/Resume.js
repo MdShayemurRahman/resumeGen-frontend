@@ -50,7 +50,7 @@ const Resume = ({ profileData }) => {
             </Typography>
           )}
           {!isEmpty(profileData.headline) && (
-            <Typography variant='h6' sx={{ color: '#cccccc', mb: 2 }}>
+            <Typography variant='body6' sx={{ color: '#cccccc', mb: 2 }}>
               {profileData.headline}
             </Typography>
           )}
@@ -59,45 +59,56 @@ const Resume = ({ profileData }) => {
               {profileData.summary}
             </Typography>
           )}
-          <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-            {!isEmpty(profileData.user.email) && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <EmailIcon fontSize='small' />
-                <Link href={`mailto:${profileData.user.email}`} color='inherit'>
-                  {profileData.user.email}
-                </Link>
-              </Box>
-            )}
-            {!isEmpty(profileData.phone) && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <PhoneIcon fontSize='small' />
-                <Link href={`tel:${profileData.phone}`} color='inherit'>
-                  {profileData.phone}
-                </Link>
-              </Box>
-            )}
-            {!isEmpty(profileData.github) && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <GitHubIcon fontSize='small' />
-                <Link href={profileData.github} color='inherit' target='_blank'>
-                  GitHub
-                </Link>
-              </Box>
-            )}
-            {!isEmpty(profileData.user.linkedinURL) && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <LinkedInIcon fontSize='small' />
-                <Link
-                  href={profileData.user.linkedinURL}
-                  color='inherit'
-                  target='_blank'
-                >
-                  LinkedIn
-                </Link>
-              </Box>
-            )}
-          </Box>
         </Box>
+      </Box>
+
+      {/* Contact info */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 3,
+          flexWrap: 'wrap',
+          p: 1,
+        }}
+      >
+        {!isEmpty(profileData.user.email) && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <EmailIcon fontSize='small' />
+            <Link href={`mailto:${profileData.user.email}`} color='inherit'>
+              {profileData.user.email}
+            </Link>
+          </Box>
+        )}
+        {!isEmpty(profileData.phone) && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <PhoneIcon fontSize='small' />
+            <Link href={`tel:${profileData.phone}`} color='inherit'>
+              {profileData.phone}
+            </Link>
+          </Box>
+        )}
+        {!isEmpty(profileData.githubURL) && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <GitHubIcon fontSize='small' />
+            <Link href={profileData.githubURL} color='inherit'>
+              GitHub
+            </Link>
+          </Box>
+        )}
+        {!isEmpty(profileData.user.linkedinURL) && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <LinkedInIcon fontSize='small' />
+            <Link
+              href={profileData.user.linkedinURL}
+              color='inherit'
+              target='_blank'
+            >
+              LinkedIn
+            </Link>
+          </Box>
+        )}
       </Box>
 
       {/* Main Content */}
@@ -113,28 +124,39 @@ const Resume = ({ profileData }) => {
                       {exp.title}
                     </Typography>
                   )}
-                  {(!isEmpty(exp.company) || !isEmpty(exp.location)) && (
+                  {!isEmpty(exp.company) && (
                     <Typography variant='subtitle1' color='primary'>
                       {exp.company}
-                      {!isEmpty(exp.company) && !isEmpty(exp.location) && ' | '}
-                      {exp.location}
                     </Typography>
                   )}
-                  {(!isEmpty(exp.startDate) || !isEmpty(exp.endDate)) && (
+                  {(!isEmpty(exp.startDate) ||
+                    !isEmpty(exp.endDate) ||
+                    !isEmpty(exp.location)) && (
                     <Typography
                       variant='subtitle2'
                       color='text.secondary'
                       sx={{ mb: 1 }}
                     >
-                      {exp.startDate}
+                      {!isEmpty(exp.startDate) && exp.startDate}
                       {!isEmpty(exp.startDate) &&
                         !isEmpty(exp.endDate) &&
                         ' - '}
-                      {exp.endDate}
+                      {!isEmpty(exp.endDate) && exp.endDate}
+                      {(!isEmpty(exp.startDate) || !isEmpty(exp.endDate)) &&
+                        !isEmpty(exp.location) &&
+                        ' | '}
+                      {!isEmpty(exp.location) && exp.location}
                     </Typography>
                   )}
                   {!isEmpty(exp.description) && (
-                    <Typography variant='body2'>{exp.description}</Typography>
+                    <Typography
+                      variant='body2'
+                      sx={{
+                        whiteSpace: 'pre-line', // Preserves line breaks in description
+                      }}
+                    >
+                      {exp.description}
+                    </Typography>
                   )}
                 </Box>
               ))}
@@ -224,21 +246,6 @@ const Resume = ({ profileData }) => {
             </Section>
           )}
 
-          {!isArrayEmpty(profileData.languages) && (
-            <Section title='Languages'>
-              {profileData.languages.map(
-                (lang, index) =>
-                  (!isEmpty(lang.name) || !isEmpty(lang.level)) && (
-                    <Typography key={index} variant='body2'>
-                      {lang.name}
-                      {!isEmpty(lang.name) && !isEmpty(lang.level) && ' - '}
-                      {lang.level}
-                    </Typography>
-                  )
-              )}
-            </Section>
-          )}
-
           {!isArrayEmpty(profileData.certifications) && (
             <Section title='Certifications'>
               {profileData.certifications.map((cert, index) => (
@@ -257,6 +264,21 @@ const Resume = ({ profileData }) => {
                   )}
                 </Box>
               ))}
+            </Section>
+          )}
+
+          {!isArrayEmpty(profileData.languages) && (
+            <Section title='Languages'>
+              {profileData.languages.map(
+                (lang, index) =>
+                  (!isEmpty(lang.name) || !isEmpty(lang.level)) && (
+                    <Typography key={index} variant='body2'>
+                      {lang.name}
+                      {!isEmpty(lang.name) && !isEmpty(lang.level) && ' - '}
+                      {lang.level}
+                    </Typography>
+                  )
+              )}
             </Section>
           )}
         </Grid>
