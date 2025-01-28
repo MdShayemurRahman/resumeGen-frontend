@@ -43,7 +43,11 @@ const theme = createTheme({
     },
     subtitle1: {
       fontFamily: 'Lato, sans-serif',
-      fontWeight: 600,
+      fontWeight: 700,
+    },
+    subtitle2: {
+      fontFamily: 'Lato, sans-serif',
+      fontWeight: 700,
     },
   },
 });

@@ -13,9 +13,7 @@ function App() {
         <Route
           path='/profile/:id'
           element={
-            // <ProtectedRoute>
               <HomePage />
-            // </ProtectedRoute>
           }
         />
         <Route path='*' element={<PageNotFoundPage />} />

@@ -31,7 +31,7 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position='static' sx={{ backgroundColor: 'primary.dark' }}>
+      <AppBar position='static' sx={{ backgroundColor: 'primary.dark', marginBottom: 2 }}>
         <Toolbar>
           <Typography
             variant='h5'

@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Typography, Paper, Box } from '@mui/material';
+import {
+  Grid,
+  TextField,
+  Typography,
+  Paper,
+  Box,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
   const [wordCount, setWordCount] = useState(
@@ -23,6 +34,58 @@ export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
         ...formData,
         headline: e.target.value,
       });
+    }
+  };
+
+  const handleFormat = (command) => {
+    const textarea = document.querySelector('#summaryField');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = formData.summary?.substring(start, end) || '';
+
+    let newText = formData.summary || '';
+    let newStart = start;
+    let newEnd = end;
+
+    switch (command) {
+      case 'bold':
+        newText =
+          newText.substring(0, start) +
+          `**${selectedText}**` +
+          newText.substring(end);
+        newEnd += 4;
+        break;
+      case 'italic':
+        newText =
+          newText.substring(0, start) +
+          `*${selectedText}*` +
+          newText.substring(end);
+        newEnd += 2;
+        break;
+      case 'bullet':
+        const lines = selectedText.split('\n');
+        const bulletedLines = lines
+          .map((line) => `• ${line.trim()}`)
+          .join('\n');
+        newText =
+          newText.substring(0, start) + bulletedLines + newText.substring(end);
+        newEnd = start + bulletedLines.length;
+        break;
+      default:
+        break;
+    }
+    const inputWords = newText.split(/\s+/).filter((word) => word !== '');
+    if (inputWords.length <= 100) {
+      setFormData({
+        ...formData,
+        summary: newText,
+      });
+      setWordCount(inputWords.length);
+
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(newStart, newEnd);
+      }, 0);
     }
   };
 
@@ -81,18 +144,57 @@ export const PersonalInfoField = ({ formData, setFormData, isMobile }) => {
                 size={isMobile ? 'small' : 'medium'}
                 sx={{ mb: 2 }}
               />
-              <TextField
-                name='Summary'
-                label='Summary'
-                value={formData.summary || ''}
-                fullWidth
-                multiline
-                rows={4}
-                onChange={handleSummaryChange}
-                helperText={`${wordCount}/100 words`}
-                size={isMobile ? 'small' : 'medium'}
-                sx={{ mb: 2 }}
-              />
+
+              {/* Summary field with formatting toolbar */}
+              <Box sx={{ mb: 2 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: 1,
+                    mb: 1,
+                    borderBottom: '1px solid',
+                    borderColor: 'divider',
+                    pb: 1,
+                  }}
+                >
+                  <Tooltip title='Bold'>
+                    <IconButton
+                      size='small'
+                      onClick={() => handleFormat('bold')}
+                    >
+                      <FormatBoldIcon fontSize='small' />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Italic'>
+                    <IconButton
+                      size='small'
+                      onClick={() => handleFormat('italic')}
+                    >
+                      <FormatItalicIcon fontSize='small' />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Bullet List'>
+                    <IconButton
+                      size='small'
+                      onClick={() => handleFormat('bullet')}
+                    >
+                      <FormatListBulletedIcon fontSize='small' />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+                <TextField
+                  id='summaryField'
+                  name='Summary'
+                  label='Summary'
+                  value={formData.summary || ''}
+                  fullWidth
+                  multiline
+                  rows={4}
+                  onChange={handleSummaryChange}
+                  helperText={`${wordCount}/100 words`}
+                  size={isMobile ? 'small' : 'medium'}
+                />
+              </Box>
             </Grid>
 
             <Grid item xs={12} sm={6}>

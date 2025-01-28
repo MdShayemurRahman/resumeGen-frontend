@@ -13,7 +13,6 @@ const HomePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState(null);
-  const [isEditMode, setIsEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [notification, setNotification] = useState({
@@ -33,7 +32,6 @@ const HomePage = () => {
       } catch (error) {
         console.error('Error fetching user profile:', error);
         setError('Failed to load profile. Please try again.');
-        // If unauthorized, redirect to login
         if (error.response?.status === 401) {
           navigate('/login');
         }
@@ -47,37 +45,17 @@ const HomePage = () => {
     }
   }, [id, navigate]);
 
-  const handleEditProfile = async () => {
-    try {
-      setIsLoading(true);
-      const data = await fetchUserProfile(id);
-      setProfileData(data);
-      setIsEditMode(true);
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
-      setNotification({
-        open: true,
-        message: 'Failed to load profile for editing',
-        type: 'error',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleSaveProfile = async (formData) => {
     try {
       setIsLoading(true);
       await updateUserProfile(profileData.user._id.toString(), formData);
       const updatedProfileData = await fetchUserProfile(id);
       setProfileData(updatedProfileData);
-      setIsEditMode(false);
       setNotification({
         open: true,
         message: 'Profile updated successfully',
         type: 'success',
       });
-      navigate(`/profile/${profileData.user._id}`);
     } catch (error) {
       console.error('Error updating profile:', error);
       setNotification({
@@ -90,51 +68,73 @@ const HomePage = () => {
     }
   };
 
-  const handleCancelEdit = () => {
-    setIsEditMode(false);
-    navigate(`/profile/${id}`);
-  };
-
   const handleCloseNotification = () => {
     setNotification({ ...notification, open: false });
   };
 
   if (isLoading && !profileData) {
     return (
-      <>
+      <div>
         <Navbar />
-        <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth='xl' sx={{ mt: 4, mb: 4 }}>
           <LoadingComponent />
         </Container>
-      </>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <>
+      <div>
         <Navbar />
-        <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth='xl' sx={{ mt: 4, mb: 4 }}>
           <Alert severity='error'>{error}</Alert>
         </Container>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div>
       <Navbar />
-      <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={8}>
-            {isEditMode ? (
-              <EditResume
-                profileData={profileData}
-                onSave={handleSaveProfile}
-                onCancel={handleCancelEdit}
-                isLoading={isLoading}
-              />
-            ) : profileData ? (
+      <Container
+        maxWidth={false}
+        sx={{
+          height: 'calc(100vh - 100px)',
+        }}
+      >
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            height: '100%',
+          }}
+        >
+          {/* Left Column - Settings */}
+          <Grid
+            item
+            xs={12}
+            md={2}
+            lg={1}
+            sx={{
+              height: '100%',
+            }}
+          >
+            <Settings componentRef={componentRef} />
+          </Grid>
+
+          {/* Middle Column - Resume */}
+          <Grid
+            item
+            xs={12}
+            md={5}
+            lg={6}
+            sx={{
+              height: '100%',
+              overflowY: 'auto',
+            }}
+          >
+            {profileData ? (
               <div ref={componentRef}>
                 <Resume profileData={profileData} />
               </div>
@@ -144,12 +144,28 @@ const HomePage = () => {
               </Typography>
             )}
           </Grid>
-          {!isEditMode && profileData && (
-            <Settings
-              onEditProfile={handleEditProfile}
-              componentRef={componentRef}
-            />
-          )}
+
+          {/* Right Column - Edit */}
+          <Grid
+            item
+            xs={12}
+            md={5}
+            lg={5}
+            sx={{
+              height: '100%',
+              overflowY: 'auto',
+              borderLeft: '1px solid',
+              borderColor: 'divider',
+            }}
+          >
+            {profileData && (
+              <EditResume
+                profileData={profileData}
+                onSave={handleSaveProfile}
+                isLoading={isLoading}
+              />
+            )}
+          </Grid>
         </Grid>
 
         <Snackbar
@@ -166,7 +182,7 @@ const HomePage = () => {
           </Alert>
         </Snackbar>
       </Container>
-    </>
+    </div>
   );
 };
 
